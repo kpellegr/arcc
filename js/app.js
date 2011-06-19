@@ -27,12 +27,14 @@ var destinationType; // sets the format of returned value
 //
 function onLoad() {
 	document.addEventListener("deviceready",onDeviceReady,false);
+	console.log("document loaded");
 }
 
 
 // PhoneGap is ready to be used!
 //
 function onDeviceReady() {
+	console.log("PhoneGap says: device ready");
 	pictureSource=navigator.camera.PictureSourceType;
 	destinationType=navigator.camera.DestinationType;
 }
