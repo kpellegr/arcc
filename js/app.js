@@ -10,8 +10,8 @@ function onLoad() {
 //
 function onDeviceReady() {
 	console.log("PhoneGap says: device ready");
-	pictureSource=navigator.camera.PictureSourceType;
-	destinationType=navigator.camera.DestinationType;
+//	pictureSource=navigator.camera.PictureSourceType;
+//	destinationType=navigator.camera.DestinationType;
 }
 
 Ext.regApplication({
@@ -26,7 +26,7 @@ Ext.regApplication({
         setTimeout(this.mainLaunch(), 500);
     },
     mainLaunch: function() {
-        if (!device || !this.launched) {return;}
+  //      if (!device || !this.launched) {return;}
         console.log('mainLaunch');
 		
 		//remove splash image

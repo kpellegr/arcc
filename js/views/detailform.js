@@ -113,8 +113,8 @@ arcc.views.DetailForm = Ext.extend(Ext.form.FormPanel, {
 			},
 			{
 				xtype: 'button',
-				text: 'Wissen',
-				ui: 'light',
+				//text: 'Wissen',
+				//ui: 'light',
 				iconCls: 'trash2',
 				handler: function() {
 					Ext.dispatch({
