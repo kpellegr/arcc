@@ -1,0 +1,24 @@
+CACHE MANIFEST
+
+#version1.0 
+
+index.html
+
+design/css/senchatouch.css
+design/css/arc.css
+
+images/icon.png
+images/background.png
+images/Default.png
+design/images/CameraIcon.png
+
+js/app.js
+js/models/arcc.js
+js/views/viewport.js
+js/views/photocard.js
+js/views/detailform.js
+
+js/senchatouch.js
+js/jquery.js
+js/phonegap.0.9.5.1.js
+js/base64.js

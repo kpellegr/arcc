@@ -1,0 +1,29 @@
+/* CSS Document */
+
+.photocard {
+/*	background:url(../../images/background.png) no-repeat;*/
+	height: 200px;
+	width: 320px;
+}
+
+.white {
+	background-color: #fff;
+}
+
+.white_form {
+	background-color: #fff;
+	padding:10px;
+}
+
+.btn_blue{
+	height:50px;
+}
+
+.btn_red{
+	height:50px;
+
+}
+
+.btn_yellow{
+	height:50px;
+}
