@@ -1,27 +1,3 @@
-Ext.regApplication({
-    name: 'arcc',
-    icon: "images/icon.png",
-    tabletStartupScreen: "tabletstartup.png",
-    phoneStartupScreen: "images/Default.png",
-    glossOnIcon: false,
-    launch: function() {
-        this.launched = true;
-        this.mainLaunch();
-    },
-    mainLaunch: function() {
-        if (!device || !this.launched) {return;}
-        console.log('mainLaunch');
-		
-		//remove splash image
-		var splash = Ext.get('splash-image');
-		splash.remove();
-		this.views.viewport = new arcc.views.Viewport();
-    }
-});
-
-var pictureSource;   // picture source
-var destinationType; // sets the format of returned value 
-
 // Wait for PhoneGap to connect with the device
 //
 function onLoad() {
@@ -37,3 +13,27 @@ function onDeviceReady() {
 	pictureSource=navigator.camera.PictureSourceType;
 	destinationType=navigator.camera.DestinationType;
 }
+
+Ext.regApplication({
+    name: 'arcc',
+    icon: "images/icon.png",
+    tabletStartupScreen: "tabletstartup.png",
+    phoneStartupScreen: "images/Default.png",
+    glossOnIcon: false,
+    launch: function() {
+        this.launched = true;
+		console.log("app launched");
+        setTimeout(this.mainLaunch(), 500);
+    },
+    mainLaunch: function() {
+        if (!device || !this.launched) {return;}
+        console.log('mainLaunch');
+		
+		//remove splash image
+		this.views.viewport = new arcc.views.Viewport();
+    }
+});
+
+var pictureSource;   // picture source
+var destinationType; // sets the format of returned value 
+
