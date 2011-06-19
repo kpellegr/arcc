@@ -17,6 +17,8 @@ Ext.regModel("arcc.models.Request", {
 		{type: 'presence', name: 'naam', message:"Gelieve een naam op te geven"},
 		{type: 'presence', name: 'functie', message : "Gelieve een functie in te geven"},
 		{type: 'presence', name: 'bedrijf', message : "Gelieve een bedrijf in te geven"},
+		{type: 'presence', name: 'aantal_gsms', message : "Gelieve het aantal gsms in te geven"},
+		{type: 'presence', name: 'aantal_wagens', message : "Gelieve het aantal wagens te geven"},
 		{type: 'format',   name: 'email', matcher: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, message:"Verkeerd emailadres"},
 	]
 });

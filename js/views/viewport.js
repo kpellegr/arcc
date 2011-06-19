@@ -1,6 +1,6 @@
-arcc.views.Viewport = Ext.extend(Ext.Carousel, {
+arcc.views.Viewport = Ext.extend(Ext.Panel, {
 	fullscreen: true,
-	layout: {type:'panel'},
+	layout: 'card',
 	indicator: false,
 	scroll:'vertical',
 	
@@ -9,15 +9,17 @@ arcc.views.Viewport = Ext.extend(Ext.Carousel, {
         Ext.apply(arcc.views, {
             photoCard: new arcc.views.PhotoCard(),
             detailForm: new arcc.views.DetailForm()
+/*            detailForm1: new arcc.views.DetailForm1(),
+            detailForm2: new arcc.views.DetailForm2()*/
         });
-		arcc.views.photoCard.cls = 'card card1';
-		arcc.views.detailForm.cls = 'card card2';
 
 	    //put instances of cards into viewport
         Ext.apply(this, {
             items: [
 				arcc.views.photoCard,
-				arcc.views.detailForm
+				arcc.views.detailForm,
+/*				arcc.views.detailForm1,
+				arcc.views.detailForm2*/
             ]
         });
 

@@ -21,8 +21,11 @@ arcc.views.PhotoCard = Ext.extend(Ext.Panel, {
 			ui: "round",
 			text: "Kies een bestaande foto",
 			handler: function(){
-				console.log('bestaande foto');
-				navigator.camera.getPicture(onPhotoSuccess, onPhotoFail, {quality: 25, sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY})
+				Ext.dispatch({
+					controller: arcc.controllers.arccController,
+					action: 'findPicture',
+					origin: 'photocard'
+				});	
 			}
 		},
 		{
@@ -35,10 +38,11 @@ arcc.views.PhotoCard = Ext.extend(Ext.Panel, {
 			ui: "round",
 			text: 'Maak een nieuwe foto',
 			handler: function(){
-				console.log('maak een nieuwe foto!')
-				navigator.camera.getPicture(onPhotoSuccess, onPhotoFail, { 
-					quality: 25
-				});
+				Ext.dispatch({
+					controller: arcc.controllers.arccController,
+					action: 'makePicture',
+					origin: 'photocard'
+				});	
 			}
 		},
 		{
@@ -51,15 +55,14 @@ arcc.views.PhotoCard = Ext.extend(Ext.Panel, {
 			ui: "round",
 			text: 'Wis deze foto',
 			handler: function(){
-				imageEl = document.getElementById('largeImage');
-				if (imageEl){
-					//imageEl.style.display = 'none';
-					imageEl.src = 'images/foto_holder.png';
-				}
-				
+				Ext.dispatch({
+					controller: arcc.controllers.arccController,
+					action: 'resetPhoto',
+					origin: 'photocard'
+				});	
 			}
 		},{
-			html: '<div style="margin:0 auto 12px; width:320px; text-align=center;"><img id="largeImage" style="display:none; margin:0 auto; width:300px;" src=""></div>'
+			html: '<div style="margin:0 auto 12px; width:320px; text-align=center;"><img id="largeImage" style="margin:0 auto; width:300px;" src="images/fotoholder.png"></div>'
 		}
 							
 
@@ -76,9 +79,28 @@ arcc.views.PhotoCard = Ext.extend(Ext.Panel, {
 				iconMask: true,
 				iconCls: 'cloud_black_upload2',
 				handler: function() {
-					uploadAndMail();
+					Ext.dispatch({
+						controller: arcc.controllers.arccController,
+						action: 'reload',
+						origin: 'photocard'
+					});
 				}
 			},
+			{
+				xtype: 'spacer'
+			},
+			{
+				xtype: 'button',
+				text: 'Volgende',
+				ui: 'forward',
+				handler: function() {
+					Ext.dispatch({
+						controller: arcc.controllers.arccController,
+						action: 'forward',
+						origin: 'photocard'
+					});
+				}
+			}		
 		] // end toolbaritems
 	}],	// end dockeditems
 	listeners: {

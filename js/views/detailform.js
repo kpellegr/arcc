@@ -61,26 +61,26 @@ arcc.views.DetailForm = Ext.extend(Ext.form.FormPanel, {
 			xtype: "fieldset",
 			title: "Bedrijfspark",
 			defaults:{
+				xtype: "numberfield",
 				labelAlign: "left",
 				labelWidth: "35%",
-				useClearIcon: true
+				useClearIcon: true,
+				value: 0,
+				minValue: 0
 			},
-			items: [
-				new Ext.form.Spinner({
-					value: 0,
-					minValue: 0,
+			items: [ 
+				{
 					name: "aantal_gsms",
 					label: "GSM's",
-					id: "aantal_gsms"
-				}),
-				new Ext.form.Spinner({
-					value: 0,
-					minValue: 0,
+					id: "aantal_gsms",
+					required: true,
+				},
+				{
 					name: "aantal_wagens",
 					label: "Wagens",
 					id: "aantal_wagens",
 					required: true,
-				}),
+				},
 				{
 				   xtype : "textareafield",
 				   name  : "commentaar",
@@ -92,23 +92,20 @@ arcc.views.DetailForm = Ext.extend(Ext.form.FormPanel, {
 			]
 		}
 	],
-	listeners : {
-		submit : function(form, result){
-			console.log("success", Ext.toArray(arguments));
-		},
-		exception : function(form, result){
-		}
-	},
 	dockedItems: [{
-		xtype: "toolbar",
-		dock: "bottom",
+		xtype: 'toolbar',
+		dock: 'bottom',
 		items: [
 			{
 				xtype: 'button',
 				text: 'Wissen',
 				ui: 'light',
 				handler: function() {
-					arcc.views.detailForm.reset();
+					Ext.dispatch({
+						controller: arcc.controllers.arccController,
+						action: 'resetForm',
+						origin: 'detailForm'
+					});
 				}
 			},
 			{
@@ -119,25 +116,11 @@ arcc.views.DetailForm = Ext.extend(Ext.form.FormPanel, {
 				text: "Verzenden",
 				ui: "confirm",
 				handler: function() {
-					console.log(arcc.views.detailForm.getValues());
-					var model = Ext.ModelMgr.create(arcc.views.detailForm.getValues(),'arcc.models.Request');
-					var errors = model.validate(), message = "";
-					
-					if(errors.isValid()) {
-						arcc.stores.requestStore.add(model);
-						arcc.stores.requestStore.sync();
-
-						uploadAndMail();
-						arcc.views.detailForm.reset();
-						arcc.views.viewport.setActiveItem(arcc.views.photoCard), {type:'slide', direction:'right'};
-					}
-					else {
-						Ext.each(errors.items,function(rec,i){
-							message += rec.message+"<br>";
-						});
-						Ext.Msg.alert("Controleer even:", message, function(){});
-						return false;						
-					}
+					Ext.dispatch({
+						controller: arcc.controllers.arccController,
+						action: 'submit',
+						origin: 'detailForm'
+					});
 				}
 			}		
 		] // end toolbaritems

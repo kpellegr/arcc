@@ -1,0 +1,634 @@
+3.2.0.alpha.3 (Bleeding Edge)
+37c95df3ea1f897451008d9c5e2af7e098a2b05b
+o:Sass::Tree::RootNode
+:
+@linei:@has_childrenT:@template"ï%// Toolbar icons used with permission from Drew Wilson
+// http://pictos.drewwilson.com/
+// Pictos icons are (c) 2010 Drew Wilson
+
+@import '../global';
+
+/**
+ * @global {measurement} $button-height Default height for buttons.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */
+$button-height: 1.8em;
+
+/**
+ * @global {measurement} $button-radius Default border-radius for buttons.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */
+$button-radius: .4em !default;
+
+/**
+ * @global {measurement} $button-stroke-weight Default border width for buttons.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */
+$button-stroke-weight: .1em !default;
+
+/**
+ * @global {string} $button-gradient Default gradient for buttons.
+ *
+ * @class Ext.Button
+ * @xtype button
+ * @see background-gradient
+ */
+$button-gradient: $base-gradient !default;
+
+/**
+ * @global {string} $toolbar-icon-size Default size (width and height) for toolbar icons.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */
+$toolbar-icon-size: 1.4em !default;
+
+/**
+ * @global {boolean} $include-button-uis Optionally disable separate button UIs, including action, confirm, and decline.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */
+$include-button-uis: $include-default-uis !default;
+
+/**
+ * @global {boolean} $include-button-uis Optionally disable special CSS3 effects on buttons including gradients, text-shadows, and box-shadows.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */
+$include-button-highlights: $include-highlights !default;
+
+
+/**
+ * Includes default button styles.
+ *
+ * @class Ext.Button
+ * @xtype button
+ * @see background-gradient
+ */
+@mixin sencha-buttons {
+  // Basic button style
+  .x-button {
+    @include background-clip(padding-box);
+    @if $include-border-radius { @include border-radius($button-radius); }
+    @include display-box;
+    @include box-align(center);
+    @include toolbar-button(#ccc, $button-gradient);
+    min-height: $button-height;
+    padding: .3em .6em;
+    position: relative;
+    overflow: hidden;
+
+    // Default icon style
+    img {
+      width: 2.1em;
+      height: 2.1em;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: block;
+
+      &.x-icon-mask {
+        width: 1.3em;
+        height: 1.3em;
+        -webkit-mask-size: 1.3em;
+      }
+    }
+
+    &.x-item-disabled .x-button-label, &.x-item-disabled img {
+      opacity: .5;
+    }
+  }
+
+  .x-button-round {
+    @if $include-border-radius { @include border-radius($button-height/2); }
+    padding: .1em $button-height/2;
+  }
+
+  .x-button-small, .x-toolbar .x-button-small {
+    @if $include-border-radius { @include border-radius(.3em); }
+    padding: .2em .4em;
+    min-height: 0;
+
+    .x-button-label {
+      font-size: .6em;
+    }
+
+    img {
+      width: .75em;
+      height: .75em;
+    }
+  }
+
+  // Button icon alignment
+  .x-iconalign-left, .x-icon-align-right {
+    @include box-orient(horizontal);
+    @include box-direction(reverse);
+  }
+  .x-iconalign-top, .x-iconalign-bottom {
+    @include box-orient(vertical);
+  }
+  .x-iconalign-bottom, .x-iconalign-right {
+    @include box-direction(normal);
+  }
+  .x-iconalign-left, .x-iconalign-top {
+    @include box-direction(reverse);
+  }
+  .x-iconalign-left .x-button-label {
+    margin-left: $toolbar-spacing * 1.5;
+  }
+  .x-iconalign-right .x-button-label {
+    margin-right: $toolbar-spacing * 1.5;
+  }
+
+  // Button labels
+  .x-button-label {
+    @include box-flex(1);
+    @include box-align(center);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1.2em;
+    display: block;
+    overflow: hidden;
+  }
+
+  // Toolbar button styling
+  .x-toolbar .x-button {
+    margin: 0 .2em;
+    padding: .3em .6em;
+
+    .x-button-label {
+      font-size: .7em;
+    }
+  }
+
+  // Back/Forward buttons
+  $shadow-width: .065em; // Space between tip and its shadow
+  $overlap-width: .2em; // how far the mask is clipped
+
+  // $mask-height: $button-height + $button-stroke-weight * 2; // Ugh, this is non-specific... borders?
+  $mask-height: $button-height;
+  $mask-width: $mask-height/2.33;
+
+  $mask-offset: $button-radius - $overlap-width - $button-stroke-weight + $shadow-width - .02em;
+
+  $tip-width: $mask-width - $mask-offset + $shadow-width;
+
+  .x-button-forward, .x-button-back {
+    position: relative;
+    overflow: visible;
+    height: $button-height;
+    z-index: 1;
+    &:before, &:after {
+      @include insertion($mask-width, $mask-height, -$button-stroke-weight, auto);
+      z-index: 2;
+      -webkit-mask: $mask-offset 0 theme_image($theme-name, "tip.png") no-repeat;
+      -webkit-mask-size: $mask-width $mask-height;
+      overflow: hidden;
+    }
+  }
+
+  .x-button-back, .x-toolbar .x-button-back {
+    margin-left: $tip-width - $shadow-width + $toolbar-spacing;
+    padding-left: .4em;
+    &:before {
+      left: - $tip-width;
+    }
+    &:after {
+      left: - $tip-width + $shadow-width;
+    }
+  }
+
+  .x-button-forward, .x-toolbar .x-button-forward {
+    margin-right: $tip-width - $shadow-width + $toolbar-spacing;
+    padding-right: .4em;
+    &:before, &:after {
+      -webkit-mask: -$mask-offset 0 theme_image($theme-name, "tip_right.png") no-repeat;
+    }
+    &:before {
+      right: - $tip-width;
+    }
+    &:after {
+      right: - $tip-width + $shadow-width;
+    }
+  }
+
+  // Plain buttons automatically use a margin trick to have a
+  // wide gradial glow for pressed state.
+  .x-button.x-button-plain, .x-toolbar .x-button.x-button-plain {
+    background: none;
+    border: 0 none;
+    @include box-shadow(none);
+    @if $include-border-radius { @include border-radius(none); }
+    min-height: 0;
+    text-shadow: none;
+    height: auto;
+    line-height: auto;
+
+    margin: -1.5em -.5em;
+    padding: 1.3em 1em;
+    height: 1.8em;
+
+    & > * {
+      overflow: visible;
+      margin-top: -.75em;
+    }
+
+    img {
+      -webkit-mask-size: $toolbar-icon-size;
+      width: $toolbar-icon-size;
+      height: $toolbar-icon-size;
+    }
+
+    &.x-button-pressed {
+      background: none;
+      -webkit-box-shadow: none;
+
+      $mask-radial-glow: lighten($active-color, 50%);
+      @include background-image(radial-gradient(fade-out($mask-radial-glow, .3), fade-out($mask-radial-glow, 1) 24px));
+      img {
+        @include background-gradient(#fff, 'recessed');
+      }
+    }
+  }
+
+  // SegmentedButtons
+  .x-segmentedbutton .x-button {
+    @if $include-border-radius { @include border-radius(0); }
+    margin: 0;
+    &:first-child {
+      @if $include-border-radius { @include border-left-radius($button-radius); }
+    }
+    &:last-child {
+      @if $include-border-radius { @include border-right-radius($button-radius); }
+    }
+    &:not(:first-child) {
+      border-left: 0;
+    }
+  }
+
+  // Badges
+  $badge-size: 2em !default;
+  $badge-bg-color: darken($alert-color, 20%) !default;
+  $badge-bg-gradient: 'glossy';
+
+  .x-hasbadge {
+    overflow: visible;
+    .x-badge {
+      @extend .x-button-label;
+      @if $include-border-radius { @include border-radius($badge-size/2); }
+      @include background-clip(padding-box);
+      padding: .15em .25em;
+      z-index: 30;
+      @if $include-button-highlights {
+        @include bevel-by-background($badge-bg-color);
+        -webkit-box-shadow: #000 0 .1em .2em;
+      }
+      overflow: hidden;
+      color: #fff;
+      border: 2px solid #fff;
+      position: absolute;
+      width: auto;
+      min-width: $badge-size;
+      height: $badge-size;
+      line-height: 1.2em;
+      font-size: .6em;
+      top: -.15em;
+      right: 0px;
+      max-width: 100%;
+
+      @include background-gradient($badge-bg-color, $badge-bg-gradient);
+      display: inline-block;
+    }
+  }
+
+  @if $include-default-icons {
+    @include pictos-iconmask('action');
+    @include pictos-iconmask('add');
+    @include pictos-iconmask('arrow_down');
+    @include pictos-iconmask('arrow_left');
+    @include pictos-iconmask('arrow_right');
+    @include pictos-iconmask('arrow_up');
+    @include pictos-iconmask('compose');
+    @include pictos-iconmask('delete');
+    @include pictos-iconmask('organize');
+    @include pictos-iconmask('refresh');
+    @include pictos-iconmask('reply');
+    @include pictos-iconmask('search');
+    @include pictos-iconmask('settings');
+    @include pictos-iconmask('star');
+    @include pictos-iconmask('trash');
+    @include pictos-iconmask('maps');
+    @include pictos-iconmask('locate');
+    @include pictos-iconmask('home');
+  }
+
+  @if $include-button-uis {
+    @include sencha-button-ui('action', $active-color);
+    @include sencha-button-ui('confirm', desaturate(darken($confirm-color, 10%), 5%));
+    @include sencha-button-ui('decline', desaturate(darken($alert-color, 10%), 5%));
+  }
+}
+
+
+/**
+ * Creates a theme UI for buttons.
+ * Also automatically generates UIs for {ui-label}-round and {ui-label}-small.
+ *
+ * @param {string} $ui-label The name of the UI being created.
+ *   Can not included spaces or special punctuation (used in class names)
+ * @param {color} $color Base color for the UI.
+ * @param {string} [$gradient: $button-gradient] Default gradient for the UI.
+ *
+ * @example
+ * // SCSS
+ * @include sencha-button-ui('secondary', #99A4AE, 'glossy');
+ * 
+ * // JS
+ * var cancelBtn = new Ext.Button({text: 'Cancel', ui: 'secondary'});
+ * 
+ * @class Ext.Button
+ * @xtype button
+ */
+@mixin sencha-button-ui($ui-label, $color, $gradient: $button-gradient) {
+  .x-button.x-button-#{$ui-label}, .x-button.x-button-#{$ui-label}-round, .x-button.x-button-#{$ui-label}-small {
+    @include toolbar-button($color, $gradient);
+  }
+
+  .x-button.x-button-#{$ui-label}-round {
+    @extend .x-button-round;
+  }
+
+  .x-button.x-button-#{$ui-label}-small {
+    @extend .x-button-small;
+  }
+}
+:@children[o:Sass::Tree::CommentNode:@silenti :@value"É/* Toolbar icons used with permission from Drew Wilson
+ * http://pictos.drewwilson.com/
+ * Pictos icons are (c) 2010 Drew Wilson */;i:@lines[ ;	[ :
+@loud0:@options{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scsso:Sass::Tree::ImportNode
+:@imported_filename"../global;i
+;0;	[ ;@o;
+;0;"y/**
+ * @global {measurement} $button-height Default height for buttons.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */;i;[ ;	[ ;0;@o:Sass::Tree::VariableNode:
+@expro:Sass::Script::Number:@original"
+1.8em;f1.8 ÃÕ;i:@denominator_units[ :@numerator_units["em;{ ;i;	[ :@guarded0:
+@name"button-height;@o;
+;0;"{/**
+ * @global {measurement} $button-radius Default border-radius for buttons.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */;i;[ ;	[ ;0;@o;;o;;"
+0.4em;f0.40000000000000002 ôö;i;[ ;["em;{ ;i;	[ ;"!default;"button-radius;@o;
+;0;"Å/**
+ * @global {measurement} $button-stroke-weight Default border width for buttons.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */;i;[ ;	[ ;0;@o;;o;;"
+0.1em;f0.10000000000000001 ôö;i";[ ;["em;{ ;i";	[ ;"!default;"button-stroke-weight;@o;
+;0;"è/**
+ * @global {string} $button-gradient Default gradient for buttons.
+ *
+ * @class Ext.Button
+ * @xtype button
+ * @see background-gradient
+ */;i$;[ ;	[ ;0;@o;;o:Sass::Script::Variable	:@underscored_name"base_gradient;i+;"base-gradient;{ ;i+;	[ ;"!default;"button-gradient;@o;
+;0;"ä/**
+ * @global {string} $toolbar-icon-size Default size (width and height) for toolbar icons.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */;i-;[ ;	[ ;0;@o;;o;;"
+1.4em;f1.3999999999999999 ff;i3;[ ;["em;{ ;i3;	[ ;"!default;"toolbar-icon-size;@o;
+;0;"©/**
+ * @global {boolean} $include-button-uis Optionally disable separate button UIs, including action, confirm, and decline.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */;i5;[ ;	[ ;0;@o;;o;	;"include_default_uis;i;;"include-default-uis;{ ;i;;	[ ;"!default;"include-button-uis;@o;
+;0;"¿/**
+ * @global {boolean} $include-button-uis Optionally disable special CSS3 effects on buttons including gradients, text-shadows, and box-shadows.
+ *
+ * @class Ext.Button
+ * @xtype button
+ */;i=;[ ;	[ ;0;@o;;o;	;"include_highlights;iC;"include-highlights;{ ;iC;	[ ;"!default;"include-button-highlights;@o;
+;0;"t/**
+ * Includes default button styles.
+ *
+ * @class Ext.Button
+ * @xtype button
+ * @see background-gradient
+ */;iF;[ ;	[ ;0;@o:Sass::Tree::MixinDefNode;iM:
+@args[ ;T;	[,o;
+;i ;"/* Basic button style */;iN;[ ;	[ ;0;@o:Sass::Tree::RuleNode:@parsed_ruleso:"Sass::Selector::CommaSequence:@members[o:Sass::Selector::Sequence;$[o:#Sass::Selector::SimpleSequence;$[o:Sass::Selector::Class:@filename" ;iO;["x-button;(@;iO;(@;iO;iO;T;	[o:Sass::Tree::MixinNode:@keywords{ ;iP; [o:Sass::Script::String	;"padding-box;iP;{ :
+@type:identifier;	[ ;"background-clip;@u:Sass::Tree::IfNodeZ[o:Sass::Script::Variable	:@underscored_name"include_border_radius:
+@lineiQ:
+@name"include-border-radius:@options{ 0[o:Sass::Tree::MixinNode:@keywords{ ;iQ:
+@args[o; 	;"button_radius;iQ;"button-radius;	{ :@children[ ;"border-radius;	{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scsso;);*{ ;iR; [ ;	[ ;"display-box;@o;);*{ ;iS; [o;+	;"center;iS;{ ;,;-;	[ ;"box-align;@o;);*{ ;iT; [o:Sass::Script::Color	:@attrs{	:	blueiÃ:rediÃ:
+alphai:
+greeniÃ;0;iT;{ o;	;"button_gradient;iT;"button-gradient;@û;	[ ;"toolbar-button;@o:Sass::Tree::PropNode:@prop_syntax:new;o;	;"button_height;iU;"button-height;{ ;iU;	[ :
+@tabsi ;["min-height;@o;5;6;7;o;+;".3em .6em;,;-;iV;	[ ;8i ;["padding;@o;5;6;7;o;+;"relative;,;-;iW;	[ ;8i ;["position;@o;5;6;7;o;+;"hidden;,;-;iX;	[ ;8i ;["overflow;@o;
+;i ;"/* Default icon style */;iZ;[ ;	[ ;0;@o;!;"o;#;$[o;%;$[o;&;$[o:Sass::Selector::Element	;(" ;i[:@namespace0;["img;(@ ;i[;(@ ;i[;i[;T;	[o;5;6;7;o;+;"
+2.1em;,;-;i\;	[ ;8i ;["
+width;@o;5;6;7;o;+;"
+2.1em;,;-;i];	[ ;8i ;["height;@o;5;6;7;o;+;"no-repeat;,;-;i^;	[ ;8i ;["background-repeat;@o;5;6;7;o;+;"center;,;-;i_;	[ ;8i ;["background-position;@o;5;6;7;o;+;"
+block;,;-;i`;	[ ;8i ;["display;@o;!;"o;#;$[o;%;$[o;&;$[o:Sass::Selector::Parent;(" ;ibo;';(@Ù;ib;["x-icon-mask;(@Ù;ib;(@Ù;ib;ib;T;	[o;5;6;7;o;+;"
+1.3em;,;-;ic;	[ ;8i ;["
+width;@o;5;6;7;o;+;"
+1.3em;,;-;id;	[ ;8i ;["height;@o;5;6;7;o;+;"
+1.3em;,;-;ie;	[ ;8i ;["-webkit-mask-size;@;8i ;@:
+@rule["&.x-icon-mask;8i ;@;<["imgo;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;iio;';(@;ii;["x-item-disabled;(@;iio;&;$[o;';(@;ii;["x-button-label;(@;iio;%;$[o;&;$[o;;;(@;iio;';(@;ii;["x-item-disabled;(@;iio;&;$[o;9	;(@;ii;:0;["img;(@;ii;(@;ii;ii;T;	[o;5;6;7;o;+;".5;,;-;ij;	[ ;8i ;["opacity;@;8i ;@;<["=&.x-item-disabled .x-button-label, &.x-item-disabled img;8i ;@;<[".x-buttono;!;"o;#;$[o;%;$[o;&;$[o;';(" ;in;["x-button-round;(@@;in;(@@;in;in;T;	[u;.[o:Sass::Script::Variable	:@underscored_name"include_border_radius:
+@lineio:
+@name"include-border-radius:@options{ 0[o:Sass::Tree::MixinNode:@keywords{ ;io:
+@args[o:Sass::Script::Operation
+:@operand2o:Sass::Script::Number:@original"2:@valuei;io:@denominator_units[ :@numerator_units[ ;	{ ;io:@operand1o; 	;"button_height;io;"button-height;	@:@operator:div;	@:@children[ ;"border-radius;	{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scsso;5;6;7;o:Sass::Script::List	;[o;;"
+0.1em;f0.10000000000000001 ôö;ip;[ ;["em;{ o:Sass::Script::Operation
+:@operand2o;;"2;i;ip;[ ;[ ;@N;ip:@operand1o;	;"button_height;ip;"button-height;@N:@operator:div;@N;ip:@separator:
+space;@N;ip;	[ ;8i ;["padding;@;8i ;@;<[".x-button-roundo;!;"o;#;$[o;%;$[o;&;$[o;';(" ;is;["x-button-small;(@d;iso;%;$[o;&;$[o;';(@d;is;["x-toolbar;(@d;iso;&;$[o;';(@d;is;["x-button-small;(@d;is;(@d;is;is;T;	[
+u;.¨[o:Sass::Script::Variable	:@underscored_name"include_border_radius:
+@lineit:
+@name"include-border-radius:@options{ 0[o:Sass::Tree::MixinNode:@keywords{ ;it:
+@args[o:Sass::Script::Number:@original"
+0.3em:@valuef0.29999999999999999 33;it:@denominator_units[ :@numerator_units["em;	{ :@children[ ;"border-radius;	{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scsso;5;6;7;o;+;".2em .4em;,;-;iu;	[ ;8i ;["padding;@o;5;6;7;o;+;"0;,;-;iv;	[ ;8i ;["min-height;@o;!;"o;#;$[o;%;$[o;&;$[o;';(" ;ix;["x-button-label;(@â;ix;(@â;ix;ix;T;	[o;5;6;7;o;+;"	.6em;,;-;iy;	[ ;8i ;["font-size;@;8i ;@;<[".x-button-labelo;!;"o;#;$[o;%;$[o;&;$[o;9	;(" ;i|;:0;["img;(@ù;i|;(@ù;i|;i|;T;	[o;5;6;7;o;+;"
+.75em;,;-;i};	[ ;8i ;["
+width;@o;5;6;7;o;+;"
+.75em;,;-;i~;	[ ;8i ;["height;@;8i ;@;<["img;8i ;@;<["0.x-button-small, .x-toolbar .x-button-smallo;
+;i ;" /* Button icon alignment */;i};[ ;	[ ;0;@o;!;"o;#;$[o;%;$[o;&;$[o;';(" ;i~;["x-iconalign-left;(@Ω;i~o;%;$[o;&;$[o;';(@Ω;i~;["x-icon-align-right;(@Ω;i~;(@Ω;i~;i~;T;	[o;);*{ ;i; [o;+	;"horizontal;i;{ ;,;-;	[ ;"box-orient;@o;);*{ ;iÄ; [o;+	;"reverse;iÄ;{ ;,;-;	[ ;"box-direction;@;8i ;@;<["+.x-iconalign-left, .x-icon-align-righto;!;"o;#;$[o;%;$[o;&;$[o;';(" ;iÇ;["x-iconalign-top;(@‚;iÇo;%;$[o;&;$[o;';(@‚;iÇ;["x-iconalign-bottom;(@‚;iÇ;(@‚;iÇ;iÇ;T;	[o;);*{ ;iÉ; [o;+	;"vertical;iÉ;{ ;,;-;	[ ;"box-orient;@;8i ;@;<["*.x-iconalign-top, .x-iconalign-bottomo;!;"o;#;$[o;%;$[o;&;$[o;';(" ;iÖ;["x-iconalign-bottom;(@ˇ;iÖo;%;$[o;&;$[o;';(@ˇ;iÖ;["x-iconalign-right;(@ˇ;iÖ;(@ˇ;iÖ;iÖ;T;	[o;);*{ ;iÜ; [o;+	;"normal;iÜ;{ ;,;-;	[ ;"box-direction;@;8i ;@;<[",.x-iconalign-bottom, .x-iconalign-righto;!;"o;#;$[o;%;$[o;&;$[o;';(" ;ià;["x-iconalign-left;(@;iào;%;$[o;&;$[o;';(@;ià;["x-iconalign-top;(@;ià;(@;ià;ià;T;	[o;);*{ ;iâ; [o;+	;"reverse;iâ;{ ;,;-;	[ ;"box-direction;@;8i ;@;<["(.x-iconalign-left, .x-iconalign-topo;!;"o;#;$[o;%;$[o;&;$[o;';(" ;iã;["x-iconalign-left;(@9;ião;&;$[o;';(@9;iã;["x-button-label;(@9;iã;(@9;iã;iã;T;	[o;5;6;7;o;>
+;?o;;"1.5;f1.5;iå;@R;[ ;{ ;iå;@o;	;"toolbar_spacing;iå;"toolbar-spacing;@H;A:
+times;@H;iå;	[ ;8i ;["margin-left;@;8i ;@;<["&.x-iconalign-left .x-button-labelo;!;"o;#;$[o;%;$[o;&;$[o;';(" ;ié;["x-iconalign-right;(@Y;iéo;&;$[o;';(@Y;ié;["x-button-label;(@Y;ié;(@Y;ié;ié;T;	[o;5;6;7;o;>
+;?o;;"1.5;f1.5;iè;@R;[ ;{ ;iè;@o;	;"toolbar_spacing;iè;"toolbar-spacing;@h;A;E;@h;iè;	[ ;8i ;["margin-right;@;8i ;@;<["'.x-iconalign-right .x-button-labelo;
+;i ;"/* Button labels */;ií;[ ;	[ ;0;@o;!;"o;#;$[o;%;$[o;&;$[o;';(" ;iì;["x-button-label;(@};iì;(@};iì;iì;T;	[o;);*{ ;iî; [o;;"1;i;iî;@R;[ ;{ ;	[ ;"box-flex;@o;);*{ ;iï; [o;+	;"center;iï;{ ;,;-;	[ ;"box-align;@o;5;6;7;o;+;"nowrap;,;-;iñ;	[ ;8i ;["white-space;@o;5;6;7;o;+;"ellipsis;,;-;ió;	[ ;8i ;["text-overflow;@o;5;6;7;o;+;"center;,;-;iò;	[ ;8i ;["text-align;@o;5;6;7;o;+;"	bold;,;-;iô;	[ ;8i ;["font-weight;@o;5;6;7;o;+;"
+1.2em;,;-;iö;	[ ;8i ;["line-height;@o;5;6;7;o;+;"
+block;,;-;iõ;	[ ;8i ;["display;@o;5;6;7;o;+;"hidden;,;-;iú;	[ ;8i ;["overflow;@;8i ;@;<[".x-button-labelo;
+;i ;"!/* Toolbar button styling */;iü;[ ;	[ ;0;@o;!;"o;#;$[o;%;$[o;&;$[o;';(" ;i†;["x-toolbar;(@ ;i†o;&;$[o;';(@ ;i†;["x-button;(@ ;i†;(@ ;i†;i†;T;	[o;5;6;7;o;+;"0 .2em;,;-;i°;	[ ;8i ;["margin;@o;5;6;7;o;+;".3em .6em;,;-;i¢;	[ ;8i ;["padding;@o;!;"o;#;$[o;%;$[o;&;$[o;';(" ;i§;["x-button-label;(@Á;i§;(@Á;i§;i§;T;	[o;5;6;7;o;+;"	.7em;,;-;i•;	[ ;8i ;["font-size;@;8i ;@;<[".x-button-label;8i ;@;<[".x-toolbar .x-buttono;
+;i ;"/* Back/Forward buttons */;i©;[ ;	[ ;0;@o;;o;;"0.065em;f0.065000000000000002 p§;i™;[ ;["em;{ ;i™;	[ ;0;"shadow-width;@o;
+;i ;"+/* Space between tip and its shadow */;i™;[ ;	[ ;0;@o;;o;;"
+0.2em;f0.20000000000000001 ôö;i´;[ ;["em;{ ;i´;	[ ;0;"overlap-width;@o;
+;i ;"&/* how far the mask is clipped */;i´;[ ;	[ ;0;@o;
+;i ;"m/* $mask-height: $button-height + $button-stroke-weight * 2; // Ugh, this is non-specific... borders? */;i≠;[ ;	[ ;0;@o;;o;	;"button_height;iÆ;"button-height;{ ;iÆ;	[ ;0;"mask-height;@o;;o;>
+;?o;;"	2.33;f2.3300000000000001 p§;iØ;@R;[ ;{ ;iØ;@o;	;"mask_height;iØ;"mask-height;@&;A;B;@&;iØ;	[ ;0;"mask-width;@o;;o;>
+;?o;;"0.02em;f0.02 {;i±;[ ;["em;{ ;i±;@o;>
+;?o;	;"shadow_width;i±;"shadow-width;@4;i±;@o;>
+;?o;	;"button_stroke_weight;i±;"button-stroke-weight;@4;i±;@o;>
+;?o;	;"overlap_width;i±;"overlap-width;@4;i±;@o;	;"button_radius;i±;"button-radius;@4;A:
+minus;@4;A;F;@4;A:	plus;@4;A;F;@4;i±;	[ ;0;"mask-offset;@o;;o;>
+;?o;	;"shadow_width;i≥;"shadow-width;{ ;i≥;@o;>
+;?o;	;"mask_offset;i≥;"mask-offset;@K;i≥;@o;	;"mask_width;i≥;"mask-width;@K;A;F;@K;A;G;@K;i≥;	[ ;0;"tip-width;@o;!;"o;#;$[o;%;$[o;&;$[o;';(" ;iµ;["x-button-forward;(@];iµo;%;$[o;&;$[o;';(@];iµ;["x-button-back;(@];iµ;(@];iµ;iµ;T;	[
+o;5;6;7;o;+;"relative;,;-;i∂;	[ ;8i ;["position;@o;5;6;7;o;+;"visible;,;-;i∑;	[ ;8i ;["overflow;@o;5;6;7;o;	;"button_height;i∏;"button-height;{ ;i∏;	[ ;8i ;["height;@o;5;6;7;o;+;"1;,;-;iπ;	[ ;8i ;["z-index;@o;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;i∫o:Sass::Selector::Pseudo
+;(@ä:	@arg0;i∫;["before;,:
+class;(@ä;i∫o;%;$[o;&;$[o;;;(@ä;i∫o;H
+;(@ä;I0;i∫;["
+after;,;J;(@ä;i∫;(@ä;i∫;i∫;T;	[
+o;);*{ ;iª; [	o;	;"mask_width;iª;"mask-width;{ o;	;"mask_height;iª;"mask-height;@ùo:!Sass::Script::UnaryOperation	:@operando;	;"button_stroke_weight;iª;"button-stroke-weight;@ù;iª;A;F;@ùo;+	;"	auto;iª;@ù;,;-;	[ ;"insertion;@o;5;6;7;o;+;"2;,;-;iº;	[ ;8i ;["z-index;@o;5;6;7;o;=	;[	o;	;"mask_offset;iΩ;"mask-offset;{ o;;"0;i ;iΩ;@R;[ ;@µo:Sass::Script::Funcall
+;*{ ;iΩ; [o;	;"theme_name;iΩ;"theme-name;@µo;+	;"tip.png;iΩ;@µ;,:string;"theme_image;@µo;+	;"no-repeat;iΩ;@µ;,;-;iΩ;C;D;@µ;iΩ;	[ ;8i ;["-webkit-mask;@o;5;6;7;o;=	;[o;	;"mask_width;iæ;"mask-width;{ o;	;"mask_height;iæ;"mask-height;@Õ;iæ;C;D;@Õ;iæ;	[ ;8i ;["-webkit-mask-size;@o;5;6;7;o;+;"hidden;,;-;iø;	[ ;8i ;["overflow;@;8i ;@;<["&:before, &:after;8i ;@;<["&.x-button-forward, .x-button-backo;!;"o;#;$[o;%;$[o;&;$[o;';(" ;i√;["x-button-back;(@Ê;i√o;%;$[o;&;$[o;';(@Ê;i√;["x-toolbar;(@Ê;i√o;&;$[o;';(@Ê;i√;["x-button-back;(@Ê;i√;(@Ê;i√;i√;T;	[	o;5;6;7;o;>
+;?o;	;"toolbar_spacing;iƒ;"toolbar-spacing;{ ;iƒ;@o;>
+;?o;	;"shadow_width;iƒ;"shadow-width;@˚;iƒ;@o;	;"tip_width;iƒ;"tip-width;@˚;A;F;@˚;A;G;@˚;iƒ;	[ ;8i ;["margin-left;@o;5;6;7;o;+;"	.4em;,;-;i≈;	[ ;8i ;["padding-left;@o;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;i∆o;H
+;(@;I0;i∆;["before;,;J;(@;i∆;(@;i∆;i∆;T;	[o;5;6;7;o;K	;Lo;	;"tip_width;i«;"tip-width;{ ;i«;A;F;@;i«;	[ ;8i ;["	left;@;8i ;@;<["&:beforeo;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;i…o;H
+;(@,;I0;i…;["
+after;,;J;(@,;i…;(@,;i…;i…;T;	[o;5;6;7;o;>
+;?o;	;"shadow_width;i ;"shadow-width;{ ;i ;@o;K	;Lo;	;"tip_width;i ;"tip-width;@6;i ;A;F;@6;A;G;@6;i ;	[ ;8i ;["	left;@;8i ;@;<["&:after;8i ;@;<["..x-button-back, .x-toolbar .x-button-backo;!;"o;#;$[o;%;$[o;&;$[o;';(" ;iŒ;["x-button-forward;(@J;iŒo;%;$[o;&;$[o;';(@J;iŒ;["x-toolbar;(@J;iŒo;&;$[o;';(@J;iŒ;["x-button-forward;(@J;iŒ;(@J;iŒ;iŒ;T;	[
+o;5;6;7;o;>
+;?o;	;"toolbar_spacing;iœ;"toolbar-spacing;{ ;iœ;@o;>
+;?o;	;"shadow_width;iœ;"shadow-width;@_;iœ;@o;	;"tip_width;iœ;"tip-width;@_;A;F;@_;A;G;@_;iœ;	[ ;8i ;["margin-right;@o;5;6;7;o;+;"	.4em;,;-;i–;	[ ;8i ;["padding-right;@o;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;i—o;H
+;(@x;I0;i—;["before;,;J;(@x;i—o;%;$[o;&;$[o;;;(@x;i—o;H
+;(@x;I0;i—;["
+after;,;J;(@x;i—;(@x;i—;i—;T;	[o;5;6;7;o;=	;[	o;K	;Lo;	;"mask_offset;i“;"mask-offset;{ ;i“;A;F;@åo;;"0;i ;i“;@R;[ ;@åo;M
+;*{ ;i“; [o;	;"theme_name;i“;"theme-name;@åo;+	;"tip_right.png;i“;@å;,;N;"theme_image;@åo;+	;"no-repeat;i“;@å;,;-;i“;C;D;@å;i“;	[ ;8i ;["-webkit-mask;@;8i ;@;<["&:before, &:aftero;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;i‘o;H
+;(@®;I0;i‘;["before;,;J;(@®;i‘;(@®;i‘;i‘;T;	[o;5;6;7;o;K	;Lo;	;"tip_width;i’;"tip-width;{ ;i’;A;F;@≤;i’;	[ ;8i ;["
+right;@;8i ;@;<["&:beforeo;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;i◊o;H
+;(@¿;I0;i◊;["
+after;,;J;(@¿;i◊;(@¿;i◊;i◊;T;	[o;5;6;7;o;>
+;?o;	;"shadow_width;iÿ;"shadow-width;{ ;iÿ;@o;K	;Lo;	;"tip_width;iÿ;"tip-width;@ ;iÿ;A;F;@ ;A;G;@ ;iÿ;	[ ;8i ;["
+right;@;8i ;@;<["&:after;8i ;@;<["4.x-button-forward, .x-toolbar .x-button-forwardo;
+;i ;"k/* Plain buttons automatically use a margin trick to have a
+ * wide gradial glow for pressed state. */;i‹;[ ;	[ ;0;@o;!;"o;#;$[o;%;$[o;&;$[o;';(" ;iﬁ;["x-buttono;';(@‚;iﬁ;["x-button-plain;(@‚;iﬁo;%;$[o;&;$[o;';(@‚;iﬁ;["x-toolbar;(@‚;iﬁo;&;$[o;';(@‚;iﬁ;["x-buttono;';(@‚;iﬁ;["x-button-plain;(@‚;iﬁ;(@‚;iﬁ;iﬁ;T;	[o;5;6;7;o;+;"	none;,;-;iﬂ;	[ ;8i ;["background;@o;5;6;7;o;+;"0 none;,;-;i‡;	[ ;8i ;["border;@o;);*{ ;i·; [o;+	;"	none;i·;{ ;,;-;	[ ;"box-shadow;@u;.p[o:Sass::Script::Variable	:@underscored_name"include_border_radius:
+@linei‚:
+@name"include-border-radius:@options{ 0[o:Sass::Tree::MixinNode:@keywords{ ;i‚:
+@args[o:Sass::Script::String	:@value"	none;i‚;	{ :
+@type:identifier:@children[ ;"border-radius;	{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scsso;5;6;7;o;+;"0;,;-;i„;	[ ;8i ;["min-height;@o;5;6;7;o;+;"	none;,;-;i‰;	[ ;8i ;["text-shadow;@o;5;6;7;o;+;"	auto;,;-;iÂ;	[ ;8i ;["height;@o;5;6;7;o;+;"	auto;,;-;iÊ;	[ ;8i ;["line-height;@o;5;6;7;o;=	;[o;;"-1.5em;f	-1.5;iË;[ ;["em;{ o;;"-0.5em;f	-0.5;iË;[ ;["em;@.;iË;C;D;@.;iË;	[ ;8i ;["margin;@o;5;6;7;o;+;"1.3em 1em;,;-;iÈ;	[ ;8i ;["padding;@o;5;6;7;o;+;"
+1.8em;,;-;iÍ;	[ ;8i ;["height;@o;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;iÏ;(@L;iÏ">o;&;$[o:Sass::Selector::Universal;(@L;iÏ;:0;(@L;iÏ;(@L;iÏ;iÏ;T;	[o;5;6;7;o;+;"visible;,;-;iÌ;	[ ;8i ;["overflow;@o;5;6;7;o;;"-0.75em;f
+-0.75;iÓ;[ ;["em;{ ;iÓ;	[ ;8i ;["margin-top;@;8i ;@;<["
+& > *o;!;"o;#;$[o;%;$[o;&;$[o;9	;(" ;iÒ;:0;["img;(@m;iÒ;(@m;iÒ;iÒ;T;	[o;5;6;7;o;	;"toolbar_icon_size;iÚ;"toolbar-icon-size;{ ;iÚ;	[ ;8i ;["-webkit-mask-size;@o;5;6;7;o;	;"toolbar_icon_size;iÛ;"toolbar-icon-size;{ ;iÛ;	[ ;8i ;["
+width;@o;5;6;7;o;	;"toolbar_icon_size;iÙ;"toolbar-icon-size;{ ;iÙ;	[ ;8i ;["height;@;8i ;@;<["imgo;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;i˜o;';(@ì;i˜;["x-button-pressed;(@ì;i˜;(@ì;i˜;i˜;T;	[
+o;5;6;7;o;+;"	none;,;-;i¯;	[ ;8i ;["background;@o;5;6;7;o;+;"	none;,;-;i˘;	[ ;8i ;["-webkit-box-shadow;@o;;o;M
+;*{ ;i˚; [o;	;"active_color;i˚;"active-color;{ o;;"50%;i7;i˚;[ ;["%;@´;"lighten;@´;i˚;	[ ;0;"mask-radial-glow;@o;);*{ ;i¸; [o;M
+;*{ ;i¸; [o;M
+;*{ ;i¸; [o;	;"mask_radial_glow;i¸;"mask-radial-glow;{ o;;"0.3;f0.29999999999999999 33;i¸;@R;[ ;@¿;"fade-out;@¿o;=	;[o;M
+;*{ ;i¸; [o;	;"mask_radial_glow;i¸;"mask-radial-glow;@¿o;;"1;i;i¸;@R;[ ;@¿;"fade-out;@¿o;;"	24px;i;i¸;[ ;["px;@¿;i¸;C;D;@¿;"radial-gradient;@¿;	[ ;"background-image;@o;!;"o;#;$[o;%;$[o;&;$[o;9	;(" ;i˝;:0;["img;(@‚;i˝;(@‚;i˝;i˝;T;	[o;);*{ ;i˛; [o;/	;0{	;1iˇ;2iˇ;3i;4iˇ;0;i˛;{ o;+	;"recessed;i˛;@Î;,;N;	[ ;"background-gradient;@;8i ;@;<["img;8i ;@;<["&.x-button-pressed;8i ;@;<["B.x-button.x-button-plain, .x-toolbar .x-button.x-button-plaino;
+;i ;"/* SegmentedButtons */;i;[ ;	[ ;0;@o;!;"o;#;$[o;%;$[o;&;$[o;';(" ;i;["x-segmentedbutton;(@;io;&;$[o;';(@;i;["x-button;(@;i;(@;i;i;T;	[
+u;.î[o:Sass::Script::Variable	:@underscored_name"include_border_radius:
+@linei:
+@name"include-border-radius:@options{ 0[o:Sass::Tree::MixinNode:@keywords{ ;i:
+@args[o:Sass::Script::Number:@original"0:@valuei ;i:@denominator_units[ :@numerator_units[ ;	{ :@children[ ;"border-radius;	{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scsso;5;6;7;o;+;"0;,;-;i;	[ ;8i ;["margin;@o;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;io;H
+;(@;I0;i;["first-child;,;J;(@;i;(@;i;i;T;	[u;.e[o:Sass::Script::Variable	:@underscored_name"include_border_radius:
+@linei:
+@name"include-border-radius:@options{ 0[o:Sass::Tree::MixinNode:@keywords{ ;i:
+@args[o; 	;"button_radius;i;"button-radius;	{ :@children[ ;"border-left-radius;	{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scss;8i ;@;<["&:first-childo;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;i
+o;H
+;(@*;I0;i
+;["last-child;,;J;(@*;i
+;(@*;i
+;i
+;T;	[u;.f[o:Sass::Script::Variable	:@underscored_name"include_border_radius:
+@linei:
+@name"include-border-radius:@options{ 0[o:Sass::Tree::MixinNode:@keywords{ ;i:
+@args[o; 	;"button_radius;i;"button-radius;	{ :@children[ ;"border-right-radius;	{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scss;8i ;@;<["&:last-childo;!;"o;#;$[o;%;$[o;&;$[o;;;(" ;io:(Sass::Selector::SelectorPseudoClass	;(@::@selectoro;#;$[o;%;$[o;&;$[o;H;I0;["first-child;,;J;i;"not;(@:;i;(@:;i;i;T;	[o;5;6;7;o;+;"0;,;-;i;	[ ;8i ;["border-left;@;8i ;@;<["&:not(:first-child);8i ;@;<["!.x-segmentedbutton .x-buttono;
+;i ;"/* Badges */;i;[ ;	[ ;0;@o;;o;;"2em;i;i;[ ;["em;{ ;i;	[ ;"!default;"badge-size;@o;;o;M
+;*{ ;i; [o;	;"alert_color;i;"alert-color;{ o;;"20%;i;i;[ ;["%;@f;"darken;@f;i;	[ ;"!default;"badge-bg-color;@o;;o;+	;"glossy;i;{ ;,;N;i;	[ ;0;"badge-bg-gradient;@o;!;"o;#;$[o;%;$[o;&;$[o;';(" ;i;["x-hasbadge;(@~;i;(@~;i;i;T;	[o;5;6;7;o;+;"visible;,;-;i;	[ ;8i ;["overflow;@o;!;"o;#;$[o;%;$[o;&;$[o;';(" ;i;["x-badge;(@ê;i;(@ê;i;i;T;	[o:Sass::Tree::ExtendNode	;Q["."x-button-label;i;	[ ;@u;.	[o:Sass::Script::Variable	:@underscored_name"include_border_radius:
+@linei:
+@name"include-border-radius:@options{ 0[o:Sass::Tree::MixinNode:@keywords{ ;i:
+@args[o:Sass::Script::Operation
+:@operand2o:Sass::Script::Number:@original"2:@valuei;i:@denominator_units[ :@numerator_units[ ;	{ ;i:@operand1o; 	;"badge_size;i;"badge-size;	@:@operator:div;	@:@children[ ;"border-radius;	{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scsso;);*{ ;i; [o;+	;"padding-box;i;{ ;,;-;	[ ;"background-clip;@o;5;6;7;o;+;".15em .25em;,;-;i;	[ ;8i ;["padding;@o;5;6;7;o;+;"30;,;-;i;	[ ;8i ;["z-index;@u;.[o:Sass::Script::Variable	:@underscored_name"include_button_highlights:
+@linei:
+@name"include-button-highlights:@options{ 0[o:Sass::Tree::MixinNode:@keywords{ ;i :
+@args[o; 	;"badge_bg_color;i ;"badge-bg-color;	{ :@children[ ;"bevel-by-background;	{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scsso:Sass::Tree::PropNode:@prop_syntax:new:@valueo:Sass::Script::String;"#000 0 .1em .2em:
+@type:identifier;i!;[ :
+@tabsi ;["-webkit-box-shadow;	@o;5;6;7;o;+;"hidden;,;-;i#;	[ ;8i ;["overflow;@o;5;6;7;o;+;"	#fff;,;-;i$;	[ ;8i ;["
+color;@o;5;6;7;o;+;"2px solid #fff;,;-;i%;	[ ;8i ;["border;@o;5;6;7;o;+;"absolute;,;-;i&;	[ ;8i ;["position;@o;5;6;7;o;+;"	auto;,;-;i';	[ ;8i ;["
+width;@o;5;6;7;o;	;"badge_size;i(;"badge-size;{ ;i(;	[ ;8i ;["min-width;@o;5;6;7;o;	;"badge_size;i);"badge-size;{ ;i);	[ ;8i ;["height;@o;5;6;7;o;+;"
+1.2em;,;-;i*;	[ ;8i ;["line-height;@o;5;6;7;o;+;"	.6em;,;-;i+;	[ ;8i ;["font-size;@o;5;6;7;o;;"-0.15em;f-0.14999999999999999 33;i,;[ ;["em;{ ;i,;	[ ;8i ;["top;@o;5;6;7;o;+;"0px;,;-;i-;	[ ;8i ;["
+right;@o;5;6;7;o;+;"	100%;,;-;i.;	[ ;8i ;["max-width;@o;);*{ ;i0; [o;	;"badge_bg_color;i0;"badge-bg-color;{ o;	;"badge_bg_gradient;i0;"badge-bg-gradient;@;	[ ;"background-gradient;@o;5;6;7;o;+;"inline-block;,;-;i1;	[ ;8i ;["display;@;8i ;@;<[".x-badge;8i ;@;<[".x-hasbadgeu;.V[o:Sass::Script::Variable	:@underscored_name"include_default_icons:
+@linei5:
+@name"include-default-icons:@options{ 0[o:Sass::Tree::MixinNode:@keywords{ ;i6:
+@args[o:Sass::Script::String	:@value"action;i6;	{ :
+@type:string:@children[ ;"pictos-iconmask;	{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scsso;
+;{ ;i7;[o;	;"add;i7;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;i8;[o;	;"arrow_down;i8;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;i9;[o;	;"arrow_left;i9;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;i:;[o;	;"arrow_right;i:;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;i;;[o;	;"arrow_up;i;;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;i<;[o;	;"compose;i<;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;i=;[o;	;"delete;i=;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;i>;[o;	;"organize;i>;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;i?;[o;	;"refresh;i?;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;i@;[o;	;"
+reply;i@;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;iA;[o;	;"search;iA;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;iB;[o;	;"settings;iB;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;iC;[o;	;"	star;iC;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;iD;[o;	;"
+trash;iD;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;iE;[o;	;"	maps;iE;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;iF;[o;	;"locate;iF;	{ ;;;[ ;"pictos-iconmask;	@o;
+;{ ;iG;[o;	;"	home;iG;	{ ;;;[ ;"pictos-iconmask;	@u;.¯[o:Sass::Script::Variable	:@underscored_name"include_button_uis:
+@lineiJ:
+@name"include-button-uis:@options{ 0[o:Sass::Tree::MixinNode:@keywords{ ;iK:
+@args[o:Sass::Script::String	:@value"action;iK;	{ :
+@type:stringo; 	;"active_color;iK;"active-color;	@:@children[ ;"sencha-button-ui;	{:importero: Sass::Importers::Filesystem:
+@root",C:/devel/UniServer/www/arcc/design/scsso;
+;{ ;iL;[o;	;"confirm;iL;	{ ;;o:Sass::Script::Funcall
+;{ ;iL;[o;
+;{ ;iL;[o; 	;"confirm_color;iL;"confirm-color;	@o:Sass::Script::Number:@original"10%;i;iL:@denominator_units[ :@numerator_units["%;	@;"darken;	@o;;"5%;i
+;iL;[ ;["%;	@;"desaturate;	@;[ ;"sencha-button-ui;	@o;
+;{ ;iM;[o;	;"decline;iM;	{ ;;o;
+;{ ;iM;[o;
+;{ ;iM;[o; 	;"alert_color;iM;"alert-color;	@;o;;"10%;i;iM;[ ;["%;	@;;"darken;	@;o;;"5%;i
+;iM;[ ;["%;	@;;"desaturate;	@;;[ ;"sencha-button-ui;	@;"sencha-buttons;@o;
+;0;"X/**
+ * Creates a theme UI for buttons.
+ * Also automatically generates UIs for {ui-label}-round and {ui-label}-small.
+ *
+ * @param {string} $ui-label The name of the UI being created.
+ *   Can not included spaces or special punctuation (used in class names)
+ * @param {color} $color Base color for the UI.
+ * @param {string} [$gradient: $button-gradient] Default gradient for the UI.
+ *
+ * @example
+ * // SCSS
+ * @include sencha-button-ui('secondary', #99A4AE, 'glossy');
+ * 
+ * // JS
+ * var cancelBtn = new Ext.Button({text: 'Cancel', ui: 'secondary'});
+ * 
+ * @class Ext.Button
+ * @xtype button
+ */;iR;[ ;	[ ;0;@o;;ie; [[o;;"ui_label;"ui-label;{ 0[o;;"
+color;"
+color;@#0[o;;"gradient;"gradient;@#o;	;"button_gradient;ie;"button-gradient;@#;T;	[o;!;if;T;	[o;);*{ ;ig; [o;	;"
+color;ig;"
+color;{ o;	;"gradient;ig;"gradient;@8;	[ ;"toolbar-button;@;8i ;@;<[".x-button.x-button-o;	;"ui_label;if;"ui-label;{ ", .x-button.x-button-o;	;"ui_label;if;"ui-label;{ " -round, .x-button.x-button-o;	;"ui_label;if;"ui-label;{ "-smallo;!;ij;T;	[o;R	;Q["."x-button-round;ik;	[ ;@;8i ;@;<[".x-button.x-button-o;	;"ui_label;ij;"ui-label;{ "-roundo;!;in;T;	[o;R	;Q["."x-button-small;io;	[ ;@;8i ;@;<[".x-button.x-button-o;	;"ui_label;in;"ui-label;{ "-small;"sencha-button-ui;@;@
