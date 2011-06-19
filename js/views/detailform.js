@@ -98,8 +98,24 @@ arcc.views.DetailForm = Ext.extend(Ext.form.FormPanel, {
 		items: [
 			{
 				xtype: 'button',
+				text: 'Terug',
+				ui: 'back',
+				handler: function() {
+					Ext.dispatch({
+						controller: arcc.controllers.arccController,
+						action: 'back',
+						origin: 'detailForm'
+					});
+				}
+			},
+			{
+				xtype: 'spacer'
+			},
+			{
+				xtype: 'button',
 				text: 'Wissen',
 				ui: 'light',
+				iconCls: 'trash2',
 				handler: function() {
 					Ext.dispatch({
 						controller: arcc.controllers.arccController,
