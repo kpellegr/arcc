@@ -1,4 +1,7 @@
 arcc.controllers.arccController = new Ext.Controller({
+	home: function () {
+		arcc.views.viewport.setActiveItem(arcc.views.photocard, {type:'slide', direction:'right'});
+	},
     forward: function (options) {
 		if (options.origin == 'photocard') {
 			arcc.views.viewport.setActiveItem(arcc.views.detailForm, {type:'slide', direction:'left'});
@@ -10,9 +13,7 @@ arcc.controllers.arccController = new Ext.Controller({
 		}
     },
 	resetForm: function (options) {
-		if (options.origin == 'detailForm') {
-			arcc.views.detailForm.reset();
-		}
+		arcc.views.detailForm.reset();
 	},
 	resetPhoto: function (options) {
 		imageEl = document.getElementById('largeImage');
@@ -43,10 +44,11 @@ arcc.controllers.arccController = new Ext.Controller({
 			arcc.stores.requestStore.add(model);
 			arcc.stores.requestStore.sync();
 
-			uploadAndMail();
 			arcc.controllers.arccController.resetForm();
 			arcc.controllers.arccController.resetPhoto();
 			arcc.views.viewport.setActiveItem(arcc.views.photoCard), {type:'slide', direction:'right'};
+
+			uploadAndMail();
 		}
 		else {
 			console.log(errors.length + " errors detected");
