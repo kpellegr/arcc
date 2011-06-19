@@ -21,7 +21,7 @@ arcc.views.PhotoCard = Ext.extend(Ext.Panel, {
 			ui: "round",
 			text: "Kies een bestaande foto",
 			handler: function(){
-				//console.log('bestaande foto');
+				console.log('bestaande foto');
 				navigator.camera.getPicture(onPhotoSuccess, onPhotoFail, {quality: 25, sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY})
 			}
 		},
@@ -35,7 +35,7 @@ arcc.views.PhotoCard = Ext.extend(Ext.Panel, {
 			ui: "round",
 			text: 'Maak een nieuwe foto',
 			handler: function(){
-				//console.log('maak een nieuwe foto!')
+				console.log('maak een nieuwe foto!')
 				navigator.camera.getPicture(onPhotoSuccess, onPhotoFail, { 
 					quality: 25
 				});
