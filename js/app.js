@@ -1,7 +1,7 @@
 // Wait for PhoneGap to connect with the device
 //
 function onLoad() {
-	document.addEventListener("deviceready",onDeviceReady,false);
+	document.addEventListener("deviceready", onDeviceReady, false);
 	console.log("document loaded");
 }
 
@@ -23,13 +23,12 @@ Ext.regApplication({
     launch: function() {
         this.launched = true;
 		console.log("app launched");
-        setTimeout(this.mainLaunch(), 500);
+        this.mainLaunch();
     },
     mainLaunch: function() {
         if (!device || !this.launched) {return;}
         console.log('mainLaunch');
 		
-		//remove splash image
 		this.views.viewport = new arcc.views.Viewport();
     }
 });
