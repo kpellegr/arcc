@@ -66,9 +66,6 @@ function uploadAndMail(){
 function sendRequest(record) {
 	console.log('sending request for ' + record.get('email'));
 	
-	imageEl = Ext.get('largeImage');
-	console.log('posting image ' + (imageEl ? imageEl.getAttribute('src') : ''));
-	
 	parameters = {
 	naam: record.get('naam'),
 	functie: record.get('functie'),
@@ -81,7 +78,7 @@ function sendRequest(record) {
 	aantal_gsm: record.get('aantal_gsms'),
 	aantal_wagens: record.get('aantal_wagens'),
 	commentaar: record.get('commentaar'),
-	image: (imageEl ? imageEl.getAttribute('src') : '')
+	image: record.get('image')
 	}
 	
 	Ext.Ajax.request({

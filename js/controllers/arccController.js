@@ -37,6 +37,10 @@ arcc.controllers.arccController = new Ext.Controller({
 	submit: function (options) {
 		console.log(arcc.views.detailForm.getValues());
 		var model = Ext.ModelMgr.create(arcc.views.detailForm.getValues(),'arcc.models.Request');
+		imageEl = Ext.get('largeImage');
+		console.log('posting image ' + (imageEl ? imageEl.getAttribute('src') : ''));
+		model.set('image', (imageEl ? imageEl.getAttribute('src') : ''));
+
 		var errors = model.validate();
 		
 		if(errors.isValid()) {
